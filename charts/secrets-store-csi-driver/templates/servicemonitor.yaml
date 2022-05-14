@@ -1,0 +1,25 @@
+---
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "sscd.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+{{ include "sscd.labels" . | indent 2 }}
+spec:
+  endpoints:
+    - port: metrics
+      path: /metrics
+      {{- with .Values.serviceMonitor.interval }}
+      interval: {{ . }}
+      {{- end }}
+      {{- with .Values.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ . }}
+      {{- end }}
+namespaceSelector:
+  matchNames:
+    - {{ .Release.Namespace }}
+{{- end -}}
+selector:
+  matchLabels:
+    app: {{ template "sscd.name" . }}

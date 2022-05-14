@@ -216,3 +216,8 @@ imagePullSecrets: []
 tokenRequests: []
 # - audience: aud1
 # - audience: aud2
+serviceMonitor:
+  enabled: true
+  interval: 15
+  scrapeTimeout: 10
+  
